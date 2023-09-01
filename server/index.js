@@ -7,10 +7,10 @@ import multer from 'multer';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import path from 'path';
-import { fileUrlPath } from 'url';
+import { fileURLToPath } from 'url';
 
 // CONFIGURATION
-const __filename = fileUrlPath(import.meta.url);
+const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config();
 const app = express();
@@ -32,5 +32,14 @@ const storage = multer.diskStorage({
         cb(null, file.originalname);
     }
 })
-
 const upload = multer({ storage });
+
+// MONGOOSE SETUP
+console.log(process.env.PORT);
+const PORT = process.env.NODE_PORT || 6001;
+mongoose.connect(process.env.NODE_MONGO_URL, {
+    useNewUrlParser :true ,
+    useUnifiedTopology: true,
+}).then(() => {
+    app.listen(PORT, () => console.log(`Server port ${PORT}`));
+}).catch((err) => console.log(`${err} did not connect`))
