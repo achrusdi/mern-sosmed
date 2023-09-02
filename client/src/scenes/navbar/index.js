@@ -104,7 +104,7 @@ const Navbar = () => {
         {/* MOBILE NAV */}
         {!isNonMobileScreens && isMobileMenuToggled && (
             <Box
-                position='fixex'
+                position='fixed'
                 right='0'
                 bottom='0'
                 height='100%'
