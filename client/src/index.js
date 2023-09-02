@@ -22,7 +22,7 @@ const persisConfig = { key: "root", storage, version: 1 };
 const persistedReducer = persistReducer(persisConfig, authReducer);
 const store = configureStore({
     reducer: persistedReducer,
-    middleware: (getDefaultMiddleware) => {
+    middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
             serializableCheck: {
                 ignoredActions: [
@@ -35,14 +35,14 @@ const store = configureStore({
                 ]
             }
         })
-    }
+
 })
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
         <Provider store={store}>
-            <PersistGate loading={null} persistor={persistStore} />
+            <PersistGate loading={null} persistor={persistStore(store)} />
             <App />
         </Provider>
     </React.StrictMode>

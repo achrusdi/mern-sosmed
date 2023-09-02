@@ -1,10 +1,8 @@
-import { React } from "react";
-
 const ProfilePage = () => {
     return (
-        <React.Fragment>
+        <div>
             ProfilePage
-        </React.Fragment>
+        </div>
     );
 }
 
