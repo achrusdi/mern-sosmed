@@ -41,9 +41,13 @@ const storage = multer.diskStorage({
         cb(null, "public/assets");
     },
     filename: function (req, file, cb) {
-        cb(null, file.originalname);
+        // Ganti nama file dengan timestamp unik (misalnya, saat gambar diunggah)
+        const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1E9);
+        const newFileName = uniqueSuffix + "-" + file.originalname;
+        cb(null, newFileName);
+        // cb(null, file.originalname);
     }
-})
+});
 const upload = multer({ storage });
 
 // ROUTES WITH FILES
