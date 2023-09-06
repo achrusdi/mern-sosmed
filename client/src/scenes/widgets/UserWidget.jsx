@@ -4,13 +4,13 @@ import { UserImage, FlexBetween, WidgetWrapper } from 'components/index';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-
-const serverUrl = process.env.REACT_APP_SERVER_URL;
+import { useTemplatesContext } from 'scenes/templates';
 
 const UserWidget = ({ userId, picturePath }) => {
-    console.log(picturePath);
+    // console.log(picturePath);
+    const { serverUrl, palette } = useTemplatesContext();
     const [user, setUser] = useState(null);
-    const { palette } = useTheme();
+    // const { palette } = useTheme();
     const navigate = useNavigate();
     const token = useSelector((state) => state.token);
     const dark = palette.neutral.dark;
@@ -26,11 +26,11 @@ const UserWidget = ({ userId, picturePath }) => {
                     headers: { Authorization: `Bearer ${token}` }
                 }
             );
-            console.log(`${serverUrl}/users/${userId}`);
+            // console.log(`${serverUrl}/users/${userId}`);
             // console.log(response.json());
 
             const data = await response.json();
-            console.log(data);
+            // console.log(data);
             setUser(data);
         } catch (error) {
 

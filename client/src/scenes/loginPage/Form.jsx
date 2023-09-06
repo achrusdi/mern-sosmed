@@ -8,8 +8,7 @@ import { useDispatch } from 'react-redux';
 import { setLogin } from 'state';
 import Dropzone from 'react-dropzone';
 import FlexBetween from 'components/FlexBetween';
-
-const serverUrl = process.env.REACT_APP_SERVER_URL;
+import { useTemplatesContext } from 'scenes/templates';
 
 const registerSchema = yup.object().shape({
     firstName: yup.string().required('required'),
@@ -42,8 +41,9 @@ const initialValueLogin = {
 }
 
 const Form = () => {
+    const { serverUrl, palette } = useTemplatesContext();
     const [pageType, setPageType] = useState('login');
-    const { palette } = useTheme();
+    // const { palette } = useTheme();
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const isNonMobile = useMediaQuery("(min-width: 600px)");
