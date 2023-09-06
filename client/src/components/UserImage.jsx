@@ -1,8 +1,8 @@
 import { Box } from '@mui/material';
+import { useTemplatesContext } from 'scenes/templates';
 
-const baseUrl = process.env.PUBLIC_URL;
-const serverUrl = process.env.REACT_APP_SERVER_URL;
 const UserImage = ({ image, size = '60px' }) => {
+const { serverUrl } = useTemplatesContext();
     return (
         <Box
             width={size}

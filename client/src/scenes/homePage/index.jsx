@@ -1,16 +1,18 @@
 import { Box, useMediaQuery } from "@mui/material";
 import { useSelector } from "react-redux";
 import Navbar from "scenes/navbar";
+import { useTemplatesContext } from "scenes/templates";
 import { UserWidget, MyPostWidget } from "scenes/widgets";
 
 
-const HomePage = () => {
-    const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
+const HomePage = ({ }) => {
+    // const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
     const { _id, picturePath } = useSelector((state) => state.user);
+    const { isNonMobileScreens } = useTemplatesContext();
 
     return (
         <Box>
-            <Navbar />
+            {/* <Navbar isNonMobileScreens={isNonMobileScreens} /> */}
             <Box
                 width='100%'
                 padding='2rem 6%'
@@ -26,7 +28,7 @@ const HomePage = () => {
                     flexBasis={isNonMobileScreens ? '42%' : undefined}
                     mt={isNonMobileScreens ? undefined : '2rem'}
                 >
-                    <MyPostWidget picturePath={picturePath} />
+                    {/* <MyPostWidget picturePath={picturePath} /> */}
                 </Box>
                 {!isNonMobileScreens && (
                     <Box flexBasis='26%'>

@@ -1,10 +1,15 @@
 import { useTheme } from "@emotion/react";
 import { Box, Typography, useMediaQuery } from "@mui/material";
 import Form from "./Form";
+import { useTemplatesContext } from "scenes/templates";
 
-const LoginPage = () => {
+const LoginPage = ({ }) => {
     const theme = useTheme();
-    const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
+    // const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
+    const { isNonMobileScreens } = useTemplatesContext();
+    // console.log('====================================');
+    // console.log(isNonMobileScreens);
+    // console.log('====================================');
 
     return (
         <Box>
