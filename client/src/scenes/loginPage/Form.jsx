@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { setLogin } from 'state';
 import Dropzone from 'react-dropzone';
 import FlexBetween from 'components/FlexBetween';
+import { useTemplatesContext } from 'scenes/templates';
 
 const registerSchema = yup.object().shape({
     firstName: yup.string().required('required'),
@@ -40,8 +41,9 @@ const initialValueLogin = {
 }
 
 const Form = () => {
+    const { serverUrl, palette } = useTemplatesContext();
     const [pageType, setPageType] = useState('login');
-    const { palette } = useTheme();
+    // const { palette } = useTheme();
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const isNonMobile = useMediaQuery("(min-width: 600px)");
@@ -57,7 +59,7 @@ const Form = () => {
         formData.append('picturePath', values.picture.name);
 
         const savedUserResponse = await fetch(
-            "http://localhost:3001/auth/register",
+            `${serverUrl}/auth/register`,
             {
                 method: 'POST',
                 body: formData
@@ -73,7 +75,7 @@ const Form = () => {
 
     const login = async (values, onSubmitProps) => {
         const loggedInResponse = await fetch(
-            "http://localhost:3001/auth/login",
+            `${serverUrl}/auth/login`,
             {
                 method: 'POST',
                 headers: {
