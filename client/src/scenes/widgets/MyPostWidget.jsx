@@ -11,7 +11,7 @@ import { Box, Divider, Typography, InputBase, useTheme, Button, IconButton, useM
 import { FlexBetween, UserImage, WidgetWrapper } from 'components';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setPost } from 'state';
+import { setPosts } from 'state';
 import { useTemplatesContext } from 'scenes/templates';
 import Dropzone from 'react-dropzone';
 
@@ -43,7 +43,7 @@ const MyPostWidget = ({ picturePath }) => {
         });
 
         const posts = await response.json();
-        dispatch(setPost({ posts }));
+        dispatch(setPosts({ posts }));
         imageSet(null);
         postSet('');
     }
