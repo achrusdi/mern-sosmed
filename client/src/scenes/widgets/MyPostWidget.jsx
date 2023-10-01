@@ -48,8 +48,6 @@ const MyPostWidget = ({ picturePath }) => {
         postSet('');
     }
 
-    console.log(serverUrl);
-
     return (
         <WidgetWrapper>
             <FlexBetween gap='1.5rem'>
