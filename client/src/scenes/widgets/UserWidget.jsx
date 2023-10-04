@@ -26,12 +26,14 @@ const UserWidget = ({ userId, picturePath }) => {
                     headers: { Authorization: `Bearer ${token}` }
                 }
             );
-            // console.log(`${serverUrl}/users/${userId}`);
-            // console.log(response.json());
+            if (await response.status === 200) {
+                const data = await response.json();
+                // console.log(data);
+                setUser(data);
+            } else {
+                console.log('something wrong!');
+            }
 
-            const data = await response.json();
-            // console.log(data);
-            setUser(data);
         } catch (error) {
 
         }

@@ -16,9 +16,12 @@ const ProfilePage = () => {
             method: 'GET',
             headers: { Authorization: `Bearer ${token}` },
         });
-        const data = await response.json();
-        console.log(data);
-        userSet(data);
+        if (await response.status === 200) {
+            const data = await response.json();
+            userSet(data);
+        } else {
+            console.log('something wrong!');
+        }
     }
 
     useEffect(() => {

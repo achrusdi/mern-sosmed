@@ -44,8 +44,12 @@ const PostWidget = ({
             },
             body: JSON.stringify({ userId: loggedInUserId })
         });
-        const updatePost = await response.json();
-        dispatch(setPost({ post: updatePost }));
+        if (await response.status === 200) {
+            const updatePost = await response.json();
+            dispatch(setPost({ post: updatePost }));
+        } else {
+            console.log('something wrong!');
+        }
     }
 
     return (
