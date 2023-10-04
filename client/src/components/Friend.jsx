@@ -31,8 +31,12 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
         },
       }
     );
-    const data = await response.json();
-    dispatch(setFriends({ friends: data }));
+    if (await response.status === 200) {
+      const data = await response.json();
+      dispatch(setFriends({ friends: data }));
+    } else {
+      console.log('something wrong!');
+    }
   };
 
   return (

@@ -22,6 +22,8 @@ const PostWidget = ({
     likes,
     comments,
 }) => {
+    // console.log(name);
+    // console.log(postUserId);
     const [isComments, isCommentsSet] = useState(false);
     const loggedInUserId = useSelector((state) => state.user._id);
     const isLiked = Boolean(likes[loggedInUserId]);
