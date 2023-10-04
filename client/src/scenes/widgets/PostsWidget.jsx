@@ -15,8 +15,12 @@ const PostsWidget = ({ userId, isProfile = false }) => {
             method: 'GET',
             headers: { Authorization: `Bearer ${token}` },
         });
-        const data = await response.json();
-        dispatch(setPosts({ posts: data }));
+        if (await response.status === 200) {
+            const data = await response.json();
+            dispatch(setPosts({ posts: data }));
+        } else {
+            console.log('something wrong!');
+        }
     }
 
     const getUserPosts = async () => {
@@ -24,8 +28,13 @@ const PostsWidget = ({ userId, isProfile = false }) => {
             method: 'GET',
             headers: { Authorization: `Bearer ${token}` },
         });
-        const data = await response.json();
-        dispatch(setPosts({ posts: data }));
+        if (await response.status === 200) {
+            const data = await response.json();
+            dispatch(setPosts({ posts: data }));
+        } else {
+            console.log('something wrong!');
+        }
+
     }
 
     useEffect(() => {

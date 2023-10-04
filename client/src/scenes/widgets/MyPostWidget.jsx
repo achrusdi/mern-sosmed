@@ -42,10 +42,15 @@ const MyPostWidget = ({ picturePath }) => {
             body: formData
         });
 
-        const posts = await response.json();
-        dispatch(setPosts({ posts }));
-        imageSet(null);
-        postSet('');
+        if (await response.status === 201) {
+            const posts = await response.json();
+            dispatch(setPosts({ posts }));
+            imageSet(null);
+            postSet('');
+        } else {
+            console.log('something wrong!');
+        }
+
     }
 
     return (

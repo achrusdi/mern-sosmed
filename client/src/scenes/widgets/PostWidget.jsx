@@ -22,6 +22,8 @@ const PostWidget = ({
     likes,
     comments,
 }) => {
+    // console.log(name);
+    // console.log(postUserId);
     const [isComments, isCommentsSet] = useState(false);
     const loggedInUserId = useSelector((state) => state.user._id);
     const isLiked = Boolean(likes[loggedInUserId]);
@@ -42,8 +44,12 @@ const PostWidget = ({
             },
             body: JSON.stringify({ userId: loggedInUserId })
         });
-        const updatePost = await response.json();
-        dispatch(setPost({ post: updatePost }));
+        if (await response.status === 200) {
+            const updatePost = await response.json();
+            dispatch(setPost({ post: updatePost }));
+        } else {
+            console.log('something wrong!');
+        }
     }
 
     return (
