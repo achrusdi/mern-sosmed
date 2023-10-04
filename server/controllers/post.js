@@ -1,18 +1,25 @@
 import Post from '../models/Post.js';
 import User from '../models/User.js';
+import validator from 'validator';
 
 // CREATE
 export const createPost = async (req, res) => {
     try {
         const { userId, description } = req.body;
         const picturePath = req.file.filename;
+        console.log(1);
+        if (typeof userId !== 'string') {
+            return res.status(400).json({ status: 'error' })
+        }
+        console.log(2);
+        const sanitizedDescription = validator.escape(description);
         const user = await User.findById(userId);
         const newPost = new Post({
             userId,
             firstName: user.firstName,
             lastName: user.lastName,
             location: user.location,
-            description,
+            description: sanitizedDescription,
             userPicturePath: user.picturePath,
             picturePath,
             likes: {},
@@ -42,6 +49,7 @@ export const getFeedPosts = async (req, res) => {
 export const getUserPosts = async (req, res) => {
     try {
         const { userId } = req.params;
+        console.log(typeof userId);
         const post = await Post.find({ userId });
         res.status(200).json(post);
     } catch (error) {
