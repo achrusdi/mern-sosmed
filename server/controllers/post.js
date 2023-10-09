@@ -7,11 +7,11 @@ export const createPost = async (req, res) => {
     try {
         const { userId, description } = req.body;
         const picturePath = req.file.filename;
-        console.log(1);
+
         if (typeof userId !== 'string') {
             return res.status(400).json({ status: 'error' })
         }
-        console.log(2);
+
         const sanitizedDescription = validator.escape(description);
         const user = await User.findById(userId);
         const newPost = new Post({
@@ -28,7 +28,8 @@ export const createPost = async (req, res) => {
 
         await newPost.save();
 
-        const post = await Post.find();
+        // const post = await Post.find();
+        const post = await Post.find().sort({ createdAt: -1 }).skip(0).limit(5);
         res.status(201).json(post);
 
     } catch (error) {
@@ -39,7 +40,19 @@ export const createPost = async (req, res) => {
 // READ
 export const getFeedPosts = async (req, res) => {
     try {
-        const post = await Post.find();
+        // console.log(req.query);
+        let { page } = req.query;
+        const itemsPerPage = 5;
+        let skip = 0;
+
+        if (isNaN(page) || page <= 1) {
+            page = 5;
+        } else {
+            page *= itemsPerPage;
+            skip = page - itemsPerPage;
+        }
+
+        const post = await Post.find().sort({ createdAt: -1 }).skip(skip).limit(itemsPerPage);
         res.status(200).json(post);
     } catch (error) {
         res.status(404).json({ message: error.message });
@@ -48,9 +61,22 @@ export const getFeedPosts = async (req, res) => {
 
 export const getUserPosts = async (req, res) => {
     try {
+        let { page } = req.query;
         const { userId } = req.params;
-        console.log(typeof userId);
-        const post = await Post.find({ userId });
+        const itemsPerPage = 5;
+        let skip = 0;
+
+        if (isNaN(page) || page <= 1) {
+            page = 5;
+        } else {
+            page *= itemsPerPage;
+            skip = page - itemsPerPage;
+        }
+
+        const post = await Post.find({ userId }).sort({ createdAt: -1 }).skip(skip).limit(itemsPerPage);
+
+        // console.log(typeof userId);
+        // const post = await Post.find({ userId });
         res.status(200).json(post);
     } catch (error) {
         res.status(404).json({ message: error.message });

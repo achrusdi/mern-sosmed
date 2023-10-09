@@ -30,7 +30,12 @@ export const authSlice = createSlice({
             }
         },
         setPosts: (state, action) => {
-            state.posts = action.payload.posts;
+            const { posts, isInitial = true} = action.payload;
+            if (isInitial) {
+                state.posts = posts;
+            } else {
+                state.posts = [...state.posts, ...posts]
+            }
         },
         setPost: (state, action) => {
             const updatedPosts = state.posts.map((post) => {
