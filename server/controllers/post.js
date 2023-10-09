@@ -28,7 +28,8 @@ export const createPost = async (req, res) => {
 
         await newPost.save();
 
-        const post = await Post.find();
+        // const post = await Post.find();
+        const post = await Post.find().sort({ createdAt: -1 }).skip(0).limit(5);
         res.status(201).json(post);
 
     } catch (error) {
@@ -60,9 +61,22 @@ export const getFeedPosts = async (req, res) => {
 
 export const getUserPosts = async (req, res) => {
     try {
+        let { page } = req.query;
         const { userId } = req.params;
-        console.log(typeof userId);
-        const post = await Post.find({ userId });
+        const itemsPerPage = 5;
+        let skip = 0;
+
+        if (isNaN(page) || page <= 1) {
+            page = 5;
+        } else {
+            page *= itemsPerPage;
+            skip = page - itemsPerPage;
+        }
+
+        const post = await Post.find({ userId }).sort({ createdAt: -1 }).skip(skip).limit(itemsPerPage);
+
+        // console.log(typeof userId);
+        // const post = await Post.find({ userId });
         res.status(200).json(post);
     } catch (error) {
         res.status(404).json({ message: error.message });

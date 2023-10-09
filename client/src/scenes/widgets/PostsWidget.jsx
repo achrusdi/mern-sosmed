@@ -35,16 +35,22 @@ const PostsWidget = ({ userId, isProfile = false }) => {
     }
 
     const getUserPosts = async () => {
+        if (isLoading) return;
+        setIsLoading(true);
+
         const response = await fetch(`${serverUrl}/posts/${userId}/posts`, {
             method: 'GET',
             headers: { Authorization: `Bearer ${token}` },
         });
         if (await response.status === 200) {
             const data = await response.json();
-            dispatch(setPosts({ posts: data }));
+            dispatch(setPosts({ posts: data, isInitial: currentPage === 1 ? true : false }));
+            setCurrentPage(currentPage + 1);
         } else {
             console.log('something wrong!');
         }
+
+        setIsLoading(false);
     }
 
     useEffect(() => {

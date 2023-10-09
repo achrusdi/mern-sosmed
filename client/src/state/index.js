@@ -30,7 +30,7 @@ export const authSlice = createSlice({
             }
         },
         setPosts: (state, action) => {
-            const { posts, isInitial } = action.payload;
+            const { posts, isInitial = true} = action.payload;
             if (isInitial) {
                 state.posts = posts;
             } else {
