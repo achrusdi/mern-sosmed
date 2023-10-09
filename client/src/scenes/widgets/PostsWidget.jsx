@@ -1,26 +1,37 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "state";
 import PostWidget from './PostWidget';
 import { useTemplatesContext } from "scenes/templates";
+import { Box, CircularProgress } from "@mui/material";
 
 const PostsWidget = ({ userId, isProfile = false }) => {
-    const { serverUrl, palette } = useTemplatesContext();
+    const { serverUrl } = useTemplatesContext();
     const dispatch = useDispatch();
     const posts = useSelector((state) => state.posts);
     const token = useSelector((state) => state.token);
 
+    const [isLoading, setIsLoading] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+
+
     const getPosts = async () => {
-        const response = await fetch(`${serverUrl}/posts`, {
+        if (isLoading) return;
+        setIsLoading(true);
+
+        const response = await fetch(`${serverUrl}/posts?page=${currentPage}`, {
             method: 'GET',
             headers: { Authorization: `Bearer ${token}` },
         });
+
         if (await response.status === 200) {
             const data = await response.json();
-            dispatch(setPosts({ posts: data }));
+            dispatch(setPosts({ posts: data, isInitial: currentPage === 1 ? true : false }));
+            setCurrentPage(currentPage + 1);
         } else {
             console.log('something wrong!');
         }
+        setIsLoading(false);
     }
 
     const getUserPosts = async () => {
@@ -34,7 +45,6 @@ const PostsWidget = ({ userId, isProfile = false }) => {
         } else {
             console.log('something wrong!');
         }
-
     }
 
     useEffect(() => {
@@ -43,7 +53,27 @@ const PostsWidget = ({ userId, isProfile = false }) => {
         } else {
             getPosts();
         }
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        const scrollListener = () => {
+            const scrollableElement = document.documentElement;
+            if (scrollableElement.scrollHeight - scrollableElement.scrollTop === scrollableElement.clientHeight) {
+                if (isProfile) {
+                    getUserPosts();
+                } else {
+                    getPosts();
+                }
+            }
+        };
+
+        window.addEventListener('scroll', scrollListener);
+
+        return () => {
+            window.removeEventListener('scroll', scrollListener);
+        };
+    }, [currentPage, isLoading]);
+
 
     return (
         <>
@@ -73,7 +103,12 @@ const PostsWidget = ({ userId, isProfile = false }) => {
                         comments={comments}
                     />
                 )
-            ).reverse()}
+            )}
+            {isLoading && (
+                <Box textAlign='center'>
+                    <CircularProgress />
+                </Box>
+            )}
         </>
     );
 }
