@@ -21,11 +21,11 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config();
 const app = express();
-const limiter = RateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100
-});
-app.use(limiter);
+// const limiter = RateLimit({
+//     windowMs: 15 * 60 * 1000, // 15 minutes
+//     max: 100
+// });
+// app.use(limiter);
 app.use(express.json());
 app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
