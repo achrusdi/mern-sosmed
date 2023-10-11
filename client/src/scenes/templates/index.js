@@ -16,7 +16,7 @@ export const Template = (props) => {
     return (
         <MyContext.Provider value={{ isNonMobileScreens, serverUrl, palette }}>
             {props.isAuth && (
-                <Navbar />
+                <Navbar isNonMobileScreens={isNonMobileScreens} />
             )}
             {props.children}
         </MyContext.Provider>
