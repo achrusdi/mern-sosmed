@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useTemplatesContext } from 'scenes/templates';
+import { SkeletonUserWidget } from './skeletons';
 
 const UserWidget = ({ userId, picturePath }) => {
     // console.log(picturePath);
@@ -43,7 +44,9 @@ const UserWidget = ({ userId, picturePath }) => {
         getUser();
     }, [])
 
-    if (!user) return null;
+    if (!user) return (
+        <SkeletonUserWidget />
+    );
 
     const {
         firstName,
