@@ -4,16 +4,17 @@ import { setPosts } from "state";
 import PostWidget from './PostWidget';
 import { useTemplatesContext } from "scenes/templates";
 import { Box, CircularProgress } from "@mui/material";
+import { PostSkeleton, SkeletonPost } from "./skeletons";
+import SkeletonElement from "./skeletons/SkeletonElement";
 
 const PostsWidget = ({ userId, isProfile = false }) => {
-    const { serverUrl } = useTemplatesContext();
-    const dispatch = useDispatch();
-    const posts = useSelector((state) => state.posts);
-    const token = useSelector((state) => state.token);
-
     const [isLoading, setIsLoading] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
 
+    const { serverUrl } = useTemplatesContext();
+    const dispatch = useDispatch();
+    const posts = useSelector((state) => currentPage === 1 ? null : state.posts);
+    const token = useSelector((state) => state.token);
 
     const getPosts = async () => {
         if (isLoading) return;
@@ -83,33 +84,38 @@ const PostsWidget = ({ userId, isProfile = false }) => {
 
     return (
         <>
-            {posts.map(
-                ({
-                    _id,
-                    userId,
-                    firstName,
-                    lastName,
-                    description,
-                    location,
-                    picturePath,
-                    userPicturePath,
-                    likes,
-                    comments
-                }) => (
-                    <PostWidget
-                        key={_id}
-                        postId={_id}
-                        postUserId={userId}
-                        name={`${firstName} ${lastName}`}
-                        description={description}
-                        location={location}
-                        picturePath={picturePath}
-                        userPicturePath={userPicturePath}
-                        likes={likes}
-                        comments={comments}
-                    />
-                )
-            )}
+            {posts === null
+                ?
+                [1, 2, 3, 4, 5].map((n) => (
+                    <SkeletonPost key={n} />
+                ))
+                : posts.map(
+                    ({
+                        _id,
+                        userId,
+                        firstName,
+                        lastName,
+                        description,
+                        location,
+                        picturePath,
+                        userPicturePath,
+                        likes,
+                        comments
+                    }) => (
+                        <PostWidget
+                            key={_id}
+                            postId={_id}
+                            postUserId={userId}
+                            name={`${firstName} ${lastName}`}
+                            description={description}
+                            location={location}
+                            picturePath={picturePath}
+                            userPicturePath={userPicturePath}
+                            likes={likes}
+                            comments={comments}
+                        />
+                    )
+                )}
             {isLoading && (
                 <Box textAlign='center'>
                     <CircularProgress />
