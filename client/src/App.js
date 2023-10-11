@@ -8,8 +8,6 @@ import { CssBaseline, ThemeProvider, useMediaQuery } from "@mui/material";
 import { createTheme } from '@mui/material/styles';
 import { themeSettings } from "theme";
 import { Template } from "scenes/templates";
-import Navbar from "scenes/navbar";
-
 
 function App() {
     const mode = useSelector((state) => state.mode);
@@ -23,9 +21,8 @@ function App() {
                 <ThemeProvider theme={theme}>
                     <Template isAuth={isAuth}>
                         <CssBaseline />
-                        {/* <Navbar /> */}
                         <Routes>
-                            <Route path="/" element={<LoginPage isNonMobileScreens={isNonMobileScreens} />} />
+                            <Route path="/" element={isAuth ? <Navigate to="/home" /> : <LoginPage isNonMobileScreens={isNonMobileScreens} />} />
                             <Route path="/home" element={isAuth ? <HomePage isNonMobileScreens={isNonMobileScreens} /> : <Navigate to='/' />} />
                             <Route path="/profile/:userId" element={isAuth ? <ProfilePage /> : <Navigate to='/' />} />
                         </Routes>
