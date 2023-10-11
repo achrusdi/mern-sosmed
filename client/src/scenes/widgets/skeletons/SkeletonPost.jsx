@@ -1,11 +1,8 @@
 import { FlexBetween, WidgetWrapper } from "components";
-import { useSelector } from "react-redux";
 import { SkeletonElement } from ".";
 import { Box } from "@mui/material";
 
 const SkeletonPost = () => {
-    const { _id } = useSelector((state) => state.user);
-
     return (
         <WidgetWrapper m='2rem 0'>
             {/* Friend */}

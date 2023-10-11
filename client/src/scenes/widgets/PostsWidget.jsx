@@ -4,8 +4,7 @@ import { setPosts } from "state";
 import PostWidget from './PostWidget';
 import { useTemplatesContext } from "scenes/templates";
 import { Box, CircularProgress } from "@mui/material";
-import { PostSkeleton, SkeletonPost } from "./skeletons";
-import SkeletonElement from "./skeletons/SkeletonElement";
+import { SkeletonPost } from "./skeletons";
 
 const PostsWidget = ({ userId, isProfile = false }) => {
     const [isLoading, setIsLoading] = useState(false);
