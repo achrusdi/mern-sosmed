@@ -1,10 +1,10 @@
 import { FlexBetween, WidgetWrapper } from "components";
-import { SkeletonElement } from ".";
+import { Shimmer, SkeletonElement } from ".";
 import { Box } from "@mui/material";
 
 const SkeletonPost = () => {
     return (
-        <WidgetWrapper m='2rem 0'>
+        <WidgetWrapper m='2rem 0' className="skeleton-wrapper">
             {/* Friend */}
             <FlexBetween>
                 <FlexBetween gap="1rem">
@@ -51,6 +51,7 @@ const SkeletonPost = () => {
 
                 <SkeletonElement type='icon' />
             </FlexBetween>
+            <Shimmer />
         </WidgetWrapper>
     );
 }
