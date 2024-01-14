@@ -13,6 +13,7 @@ import { authRoutes, userRoutes, postRoutes } from './routes/index.js';
 import { register } from './controllers/auth.js';
 import { createPost } from "./controllers/post.js";
 import { verifyTOken } from "./middleware/auth.js";
+import apicache from 'apicache';
 import { users, posts } from './data/index.js';
 import { User, Post } from "./models/index.js";
 
@@ -21,11 +22,38 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config();
 const app = express();
-const limiter = RateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100
-});
-app.use(limiter);
+
+// const onlyStatus200 = (req, res) => res.statusCode === 200;
+
+// const cacheSuccesses = cache('5 minutes', onlyStatus200);
+
+let cache = apicache.options({
+    headers: {
+        'cache-control': 'no-cache',
+    },
+}).middleware;
+
+// Toggle untuk mengontrol penggunaan caching
+let useCache = true;
+
+// Middleware untuk mengaktifkan atau menonaktifkan caching berdasarkan toggle
+const toggleCacheMiddleware = (req, res, next) => {
+    if (useCache) {
+        cache('10 minutes')(req, res, next); // Atur durasi sesuai kebutuhan Anda
+    } else {
+        next();
+    }
+};
+
+// app.use(toggleCacheMiddleware);
+
+// app.use(cache('5 minutes'));
+// app.use(cache('5 minutes'));
+// const limiter = RateLimit({
+//     windowMs: 15 * 60 * 1000, // 15 minutes
+//     max: 100
+// });
+// app.use(limiter);
 app.use(express.json());
 app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
@@ -57,7 +85,7 @@ app.post("/posts", verifyTOken, upload.single("picture"), createPost);
 // ROUTES
 app.use('/auth', authRoutes);
 app.use('/users', userRoutes);
-app.use('/posts', postRoutes);
+app.use('/posts', toggleCacheMiddleware, postRoutes);
 
 // MONGOOSE SETUP
 // console.log(process.env.PORT);
